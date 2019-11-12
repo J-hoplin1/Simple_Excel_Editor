@@ -3,6 +3,7 @@ import os
 import time
 import sys
 import warnings
+import numpy as np
 
 class excelEditor():
     bindedType = '.xlsx'
@@ -49,6 +50,12 @@ class excelEditor():
         os.system('cls')
         time.sleep(0.5)
 
+    def syncInfo(self):
+        self.selectedDBIndex = list(self.selectedDB.index)
+        self.selectedDBCol = list(self.selectedDB.columns)
+        self.selectedDBDataDict = dict()
+        for a in self.selectedDBCol:
+            self.selectedDBDataDict[a] = list(self.selectedDB[a])
     def syncDataFrame(self):
         newDataFrame  = pd.DataFrame(
             columns=self.selectedDBCol,
@@ -155,8 +162,8 @@ class excelEditor():
         print("3 . Select another DB.") #구현완료
         print("4 . Add Data.") #구현완료
         print("5 . View part of selected DB.")#구현완료
-        print("6 . Delete Row.")
-        print("7 . Delete Column.")
+        print("6 . Delete Row.")#구현완료
+        print("7 . Delete Column.")#구현완료
         print("8 . Save Data.") #구현완료
         print("9 . Edit Value")
         print("=" * 22)
@@ -205,6 +212,8 @@ class excelEditor():
                 self.addData()
             elif menuNum == 5:
                 self.viewAsPart()
+            elif menuNum == 6:
+                self.deleteRow()
             elif menuNum == 8:
                 self.saveData()
             else:
@@ -224,7 +233,7 @@ class excelEditor():
         print('\n')
         print('\n')
         print('\n')
-        print("Press any key to exit.")
+        print("Press enter to exit.")
         os.system('pause')
 
     def saveData(self):
@@ -257,7 +266,10 @@ class excelEditor():
                         # 새로운 이름의 열 추가
                         self.selectedDBCol.append(newcolName)
                         # 새로운 열에대한 열 초기화 : 초기값은 NaN으로 됨
-                        self.selectedDBDataDict[newcolName] = list()
+                        initList = []
+                        for q in range(0,len(self.selectedDB)):
+                            initList.append(np.nan)
+                        self.selectedDBDataDict[newcolName] = initList
                         loopCount += 1
                     loopCK = False
                     # 데이터 싱크해주기
@@ -273,7 +285,7 @@ class excelEditor():
                 selectRowNum = int(input(">>"))
                 if selectRowNum > 0:
                     while loopCount < selectRowNum:
-                        print("새로추가할 열 이름 입력하기(Empty Row", loopCount + 1, ")")
+                        print("새로추가할 행 이름 입력하기(Empty Row", loopCount + 1, ")")
                         newRowName = input(">>")
                         self.selectedDBIndex.append(newRowName)
                         for a in self.selectedDBCol:
@@ -298,7 +310,6 @@ class excelEditor():
             print("0 . Exit")
             print("1 . 범위를 설정하여 데이터 조회하기")
             print("2 . 특정 열을 지정하여 데이터 조회하기")
-            print("3 . 특정 행을 지정하여 데이터 조회하기")
             print("=" * 10)
             selectOption = int(input(">>"))
             self.clearConsole()
@@ -331,6 +342,7 @@ class excelEditor():
                             optionDict[a + 1] = self.selectedDBCol[a]
                         print("=" * 10)
                         option2 = int(input(">>"))
+                        self.clearConsole()
                         if option2 not in optionDict.keys():
                             print("잘못된 입력. 방금 입력된 값은 무시됩니다.")
                             self.clearConsole()
@@ -346,8 +358,6 @@ class excelEditor():
                     os.system('pause')
                     loopCK = False
                     self.clearConsole()
-            elif selectOption == 3:
-                print("지정할 행의 개수 입력하기")
             else:
                 print("Wrong option number. Please try again.")
 
@@ -361,7 +371,108 @@ class excelEditor():
                 self.clearConsole()
                 while loopIn:
                     print("=" * 10)
+                    print("0 . Exit")
+                    print("1 . 하나의 행 삭제하기")
+                    print("2 . 여러개의 행을 지정하여 삭제하기")
                     print("=" * 10)
+                    selectOP = int(input(">>"))
+                    self.clearConsole()
+                    if selectOP == 0:
+                        return
+                    elif selectOP == 1:
+                        print("현재 존재하는 행의 이름들 : ", ",".join(map(str,self.selectedDBIndex)))
+                        print("지우고자하는 행의 이름")
+                        selectROWNAME = input(">>")
+                        if selectROWNAME not in self.selectedDBIndex:
+                            print("존재하지 않는 행의 이름입니다.")
+                        else:
+                            print("데이터 삭제중...")
+                            self.selectedDB = self.selectedDB.drop(selectROWNAME)
+                            self.syncInfo()
+                            self.syncDataFrame()
+                            self.clearConsole()
+                            loopCK = False
+                            loopIn = False
+                    elif selectOP == 2:
+                        li = []
+                        print("현재 존재하는 행의 이름들 : ", ",".join(map(str, self.selectedDBIndex)))
+                        print("지정할 행의 개수 입력하기")
+                        numR = int(input(">>"))
+                        for w in range(0,numR):
+                            delR = input("행의 이름 입력하기 >>")
+                            if delR not in self.selectedDBIndex:
+                                print("존재하지 않는 행이름입니다. 해당 값은 무시됩니다")
+                            else:
+                                li.append(delR)
+                        print("데이터 삭제중...")
+                        self.selectedDB = self.selectedDB.drop(li)
+                        self.syncInfo()
+                        self.syncDataFrame()
+                        self.clearConsole()
+                        loopIn = False
+                        loopCK = False
+                    else:
+                        print("잘못된 옵션번호. 다시 입력해주세요")
+                        self.clearConsole()
+            elif select == 'N' or select == 'N':
+                return
+            else:
+                print("잘못된 옵션선택. Y 혹은 N으로 답을 입력해주세요.")
+
+    def deleteCol(self):
+        loopCK = True
+        loopIn = True
+        while loopCK:
+            print("WARNING : 삭제 후에는 데이터 복구가 불가능합니다. 계속 진행하시겠습니까?[Y / N]")
+            select = input(">>")
+            if select == 'Y' or select == 'y':
+                self.clearConsole()
+                while loopIn:
+                    print("=" * 10)
+                    print("0 . Exit")
+                    print("1 . 하나의 행 삭제하기")
+                    print("2 . 여러개의 행을 지정하여 삭제하기")
+                    print("=" * 10)
+                    selectOP = int(input(">>"))
+                    self.clearConsole()
+                    if selectOP == 0:
+                        return
+                    elif selectOP == 1:
+                        print("현재 존재하는 열의 이름들 : ", ",".join(map(str, self.selectedDBCol)))
+                        print("지우고자하는 열의 이름")
+                        selectColNAME = input(">>")
+                        if selectColNAME not in self.selectedDBCol:
+                            print("존재하지 않는 행의 이름입니다.")
+                        else:
+                            print("데이터 삭제중...")
+                            del self.selectedDB[selectColNAME]
+                            self.syncInfo()
+                            self.syncDataFrame()
+                            self.clearConsole()
+                            loopCK = False
+                            loopIn = False
+                    elif selectOP == 2:
+                        li = []
+                        print("현재 존재하는 열의 이름들 : ", ",".join(map(str, self.selectedDBCol)))
+                        print("지정할 열의 개수 입력하기")
+                        numC = int(input(">>"))
+                        for w in range(0, numC):
+                            delC = input("열의 이름 입력하기 >>")
+                            if delC not in self.selectedDBCol:
+                                print("존재하지 않는 열 이름입니다. 해당 값은 무시됩니다")
+                            else:
+                                li.append(delC)
+                        print("데이터 삭제중...")
+                        for o in li:
+                            del self.selectedDB[o]
+                        self.syncInfo()
+                        self.syncDataFrame()
+                        self.clearConsole()
+                        loopCK = False
+                        loopIn = False
+                    else:
+                        print("잘못된 옵션번호. 다시 입력해주세요")
+                        self.clearConsole()
             elif select == 'N' or select == 'N':
                 return
             else:
