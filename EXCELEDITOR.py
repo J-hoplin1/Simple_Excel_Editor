@@ -99,107 +99,70 @@ class excelEditor():
     #새로운 데이터 생성하기
     def createNewDataBaseDirect(self):
         loopCheck = True
-        try:
-            newColList = []
-            print("Enter new DataBase's Name")
-            dbNameInput = input(">>")
-            print("How many Columns do you want to generate?")
-            generateCol = int(input(">>"))
-            for addCol in range(0,generateCol):
-                print("Enter name of Col No.",addCol+1)
-                colName = input(">>")
-                newColList.append(colName)
-            newDataFrame = pd.DataFrame(
-                columns=newColList
-            )
-            #새로운 데이터의 저장
-            newDataFrame.to_excel(self.dbDir + dbNameInput + '.xlsx')
-            print("Initializing new dataframe " + dbNameInput + "...")
-            self.clearConsole()
-            #만약 지정된 DB가 None(없을때) 생성한 DB를 selectedDB로 설정한다.
-            #Initialize DataBase
-            if self.selectedDB == None:
-                self.selectedDB = newDataFrame
-                self.selectedDBName = dbNameInput
-                # 선택한 데이터베이스의 인덱스를 인스턴스 변수에 저장
-                self.selectedDBIndex = list(self.selectedDB.index)
-                self.selectedDBCol = list(self.selectedDB.columns)
-                self.selectedDBDataDict = dict()
-                for a in self.selectedDBCol:
-                    self.selectedDBDataDict[a] = list(self.selectedDB[a])
-                self.menu()
-            #만약 지정된 데이터베이스가 존재하는 경우 새로운 DB를 selectedDB로 설정할지 의사를 묻는다.
-            else:
-                print("Here2")
-                while loopCheck:
-                    print("Do you want to select this DB as default?[Y / N]")
-                    answerSelect = input(">>")
-                    if answerSelect == 'Y' or answerSelect == 'y':
-                        self.selectedDB = newDataFrame
-                        loopCheck = False
-                        self.clearConsole()
-                    elif answerSelect == 'N' or answerSelect == 'n':
-                        loopCheck = False
-                        self.clearConsole()
-                    else:
-                        print("Wrong value. Please answer with y or n")
-        except IndexError:
-            print("Index out of bound")
-            self.loop1 = 0
-            self.clearConsole()
-            return
-        except ValueError:
-            print("Value Error : Back to Main")
-            self.loop1 = 0
-            self.clearConsole()
-            self.dbSelect()
-        except TypeError:
-            self.loop1 = 0
-            print("Type Error : Back to Main - B")
-            self.clearConsole()
-            self.dbSelect()
-        except KeyError:
-            self.loop1 = 0
-            print("Key Error : Back to Main")
-            self.clearConsole()
-            self.dbSelect()
+        newColList = []
+        print("Enter new DataBase's Name")
+        dbNameInput = input(">>")
+        print("How many Columns do you want to generate?")
+        generateCol = int(input(">>"))
+        for addCol in range(0, generateCol):
+            print("Enter name of Col No.", addCol + 1)
+            colName = input(">>")
+            newColList.append(colName)
+        newDataFrame = pd.DataFrame(
+            columns=newColList
+        )
+        # 새로운 데이터의 저장
+        newDataFrame.to_excel(self.dbDir + dbNameInput + '.xlsx')
+        print("Initializing new dataframe " + dbNameInput + "...")
+        self.clearConsole()
+        # 만약 지정된 DB가 None(없을때) 생성한 DB를 selectedDB로 설정한다.
+        # Initialize DataBase
+        if self.selectedDB is None:
+            self.selectedDB = newDataFrame
+            self.selectedDBName = dbNameInput
+            # 선택한 데이터베이스의 인덱스를 인스턴스 변수에 저장
+            self.selectedDBIndex = list(self.selectedDB.index)
+            self.selectedDBCol = list(self.selectedDB.columns)
+            self.selectedDBDataDict = dict()
+            for a in self.selectedDBCol:
+                self.selectedDBDataDict[a] = list(self.selectedDB[a])
+            self.menu()
+        # 만약 지정된 데이터베이스가 존재하는 경우 새로운 DB를 selectedDB로 설정할지 의사를 묻는다.
+        else:
+            while loopCheck:
+                print("Do you want to select this DB as default?[Y / N]")
+                answerSelect = input(">>")
+                if answerSelect == 'Y' or answerSelect == 'y':
+                    self.selectedDB = newDataFrame
+                    loopCheck = False
+                    self.clearConsole()
+                elif answerSelect == 'N' or answerSelect == 'n':
+                    loopCheck = False
+                    self.clearConsole()
+                else:
+                    print("Wrong value. Please answer with y or n")
+
+
 
     #menu 메소드 -> menuselect 메소드
     def menuSelect(self):
-        try:
-            print("Selected Data Base Name : " + str(self.selectedDBName))
-            print(self.selectedDB)
-            print("=" * 8 + " Menu " + "=" * 8)
-            print("0 . Exit Program.")
-            print("1 . Create New DataBase.")
-            print("2 . View entire selected DB.")
-            print("3 . Select another DB.")
-            print("4 . Add Data.")
-            print("5 . View part of selected DB.")
-            print("6 . Delete Row.")
-            print("7 . Delete Column.")
-            print("8 . Save Data.")
-            print("9 . Edit Value")
-            print("=" * 22)
-            menuNum = int(input(">>"))
-            self.clearConsole()
-            return menuNum
-        except IndexError:
-            print("Index out of bound")
-            self.clearConsole()
-            return
-        except ValueError:
-            print("Value Error : Back to Main")
-            self.menuSelect()
-            return
-        except TypeError:
-            print("Type Error : Back to Main-C")
-            self.menuSelect()
-            return
-        except KeyError:
-            print("Key Error : Back to Main")
-            self.menuSelect()
-            return
+        print("Selected Data Base Name : " + str(self.selectedDBName))
+        print(self.selectedDB)
+        print("=" * 8 + " Menu " + "=" * 8)
+        print("0 . Exit Program.")  # 구현완료
+        print("1 . Create New DataBase.")  # 구현완료
+        print("2 . View entire selected DB.")#구현완료
+        print("3 . Select another DB.") #구현완료
+        print("4 . Add Data.") #구현완료
+        print("5 . View part of selected DB.")#구현완료
+        print("6 . Delete Row.")
+        print("7 . Delete Column.")
+        print("8 . Save Data.") #구현완료
+        print("9 . Edit Value")
+        print("=" * 22)
+        menuNum = int(input(">>"))
+        self.clearConsole()
+        return menuNum
 
     #프로그램 종료
     def exitProgram(self):
@@ -212,11 +175,19 @@ class excelEditor():
         # menu loop here
         while loopBoolean2:
             menuNum = self.menuSelect()
-            print(menuNum)
             if menuNum == 0:
                 self.exitProgram()
             elif menuNum == 1:
-                self.createNewDataBase()
+                if self.selectedDBStatusChange == False:
+                    self.createNewDataBaseDirect()
+                elif self.selectedDBStatusChange == True:
+                    select = input("Do you want to save changed data?[y/n] : ")
+                    if select == 'Y' or select == 'y':
+                        self.saveData()
+                    else:
+                        print("Data will not be saved.")
+                        self.clearConsole()
+                    self.createNewDataBaseDirect()
             elif menuNum == 2:
                 self.viewEntireData()
             elif menuNum == 3:
@@ -228,8 +199,14 @@ class excelEditor():
                         print("Data will not be saved.")
                         self.clearConsole()
                     self.dbSelect()
+                else:
+                    self.dbSelect()
             elif menuNum == 4:
                 self.addData()
+            elif menuNum == 5:
+                self.viewAsPart()
+            elif menuNum == 8:
+                self.saveData()
             else:
                 print("You entered Wrong option number")
                 self.clearConsole()
@@ -238,7 +215,7 @@ class excelEditor():
     #전체 데이터 조회하기
     def viewEntireData(self):
         start = 0
-        partitionStandard = self.findMeasure(len(self.selectedDB))
+        partitionStandard = self.findMeasure(self,len(self.selectedDB))
         end = partitionStandard
         while end <= len(self.selectedDB):
             print(self.selectedDB.iloc[start: end])
@@ -252,7 +229,8 @@ class excelEditor():
 
     def saveData(self):
         print("Saving Data...")
-        self.selectedDB.to_excel(dbDir + self.selectedDB + self.bindedType)
+        self.selectedDB.to_excel(dbDir + self.selectedDBName + self.bindedType)
+        self.selectedDBStatusChange = False
         self.clearConsole()
 
 
@@ -261,18 +239,20 @@ class excelEditor():
         loopCount = 0
         while loopCK:
             print("=" * 10)
+            print("0 . Exit")
             print("1 . 열 추가하기")
             print("2 . 행 추가하기")
             print("=" * 10)
             select = int(input(">>"))
             self.clearConsole()
-            if select == 1:
+            if select == 0:
+                return
+            elif select == 1:
                 print("추가할 열의 개수 정하기")
-                selectRowNum = int(input(">>"))
-                if selectRowNum > 0:
-                    print('1')
-                    while loopCount < selectRowNum:
-                        print("새로추가할 열 이름 입력하기(Empty Row", loopCount + 1,")")
+                selectColNum = int(input(">>"))
+                if selectColNum > 0:
+                    while loopCount < selectColNum:
+                        print("새로추가할 열 이름 입력하기(Empty column", loopCount + 1,")")
                         newcolName = input(">>")
                         # 새로운 이름의 열 추가
                         self.selectedDBCol.append(newcolName)
@@ -283,12 +263,111 @@ class excelEditor():
                     # 데이터 싱크해주기
                     self.syncDataFrame()
                     self.clearConsole()
+                    self.selectedDBStatusChange = True
                 else:
                     print("You entered wrong value. Return to Main")
                     self.clearConsole()
                     self.menu()
             elif select == 2:
-                pass
+                print("추가할 행의 개수 정하기")
+                selectRowNum = int(input(">>"))
+                if selectRowNum > 0:
+                    while loopCount < selectRowNum:
+                        print("새로추가할 열 이름 입력하기(Empty Row", loopCount + 1, ")")
+                        newRowName = input(">>")
+                        self.selectedDBIndex.append(newRowName)
+                        for a in self.selectedDBCol:
+                            print(a,"열의 값 입력하기")
+                            newVal = input(">>")
+                            self.selectedDBDataDict[a].append(newVal)
+                        loopCount += 1
+                    loopCK = False
+                    self.syncDataFrame()
+                    self.clearConsole()
+                    self.selectedDBStatusChange = True
+                else:
+                    print("You entered wrong value. Return to Main")
+                    self.clearConsole()
+                    self.menu()
+    def viewAsPart(self):
+        loopCK = True
+        while loopCK:
+            print("=" * 10)
+            print("현재 지정된 데이터베이스 총 행의 개수 : ",len(self.selectedDB),"개의 행")
+            print("현재 지정된 데이터베이스 총 열의 개수 : ",len(self.selectedDBCol),"개의 열")
+            print("0 . Exit")
+            print("1 . 범위를 설정하여 데이터 조회하기")
+            print("2 . 특정 열을 지정하여 데이터 조회하기")
+            print("3 . 특정 행을 지정하여 데이터 조회하기")
+            print("=" * 10)
+            selectOption = int(input(">>"))
+            self.clearConsole()
+            if selectOption == 0:
+                return
+            elif selectOption == 1:
+                availableRange = list(range(1,len(self.selectedDB) + 1))
+                startRange = int(input("시작할 행의 번호 입력 >>"))
+                endRange = int(input("마지막 행의 번호 입력 >>"))
+                if startRange not in availableRange or endRange not in availableRange:
+                    print("잘못된 범위입력. 최소범위는 ",availableRange[0],"이며 최대 범위는 ",availableRange[-1],"입니다")
+                elif startRange > endRange:
+                    print("잘못된 범위입력. 최소범위는 ",availableRange[0],"이며 최대 범위는 ",availableRange[-1],"입니다")
+                else:
+                    print(self.selectedDB.iloc[startRange-1,endRange + 1])
+                    loopCK = False
+                    self.clearConsole()
+            elif selectOption == 2:
+                optionDict = dict()
+                select2List = []
+                print("지정할 열의 개수 입력하기")
+                selectColNum = int(input(">>"))
+                if selectColNum not in list(range(1,len(self.selectedDBCol) + 1)):
+                    print("최대 열의 개수는 ",len(self.selectedDBCol),"개입니다. 다시입력하세요")
+                else:
+                    for r in range(0, selectColNum):
+                        print("=" * 10)
+                        for a in range(0, len(self.selectedDBCol)):
+                            print(a + 1, ".", self.selectedDBCol[a])
+                            optionDict[a + 1] = self.selectedDBCol[a]
+                        print("=" * 10)
+                        option2 = int(input(">>"))
+                        if option2 not in optionDict.keys():
+                            print("잘못된 입력. 방금 입력된 값은 무시됩니다.")
+                            self.clearConsole()
+                        else:
+                            select2List.append(option2)
+                            self.clearConsole()
+                    for y in select2List:
+                        print(self.selectedDB[y])
+                    print('\n')
+                    print('\n')
+                    print('\n')
+                    print("Press any key to exit.")
+                    os.system('pause')
+                    loopCK = False
+                    self.clearConsole()
+            elif selectOption == 3:
+                print("지정할 행의 개수 입력하기")
+            else:
+                print("Wrong option number. Please try again.")
+
+    def deleteRow(self):
+        loopCK = True
+        loopIn = True
+        while loopCK:
+            print("WARNING : 삭제 후에는 데이터 복구가 불가능합니다. 계속 진행하시겠습니까?[Y / N]")
+            select = input(">>")
+            if select == 'Y' or select == 'y':
+                self.clearConsole()
+                while loopIn:
+                    print("=" * 10)
+                    print("=" * 10)
+            elif select == 'N' or select == 'N':
+                return
+            else:
+                print("잘못된 옵션선택. Y 혹은 N으로 답을 입력해주세요.")
+
+
 
 
 ##############################################################
