@@ -13,7 +13,7 @@ Simple Excel Editor
 
 - exe file is in directory 'dist'
 
-- GUI로 안만드는 이유 : 귀찬....ㅎ.....읍읍(시간되면 PyQt5로 GUI화시켜서 올릴꺼임)
+- ??? : GUI로 안만드는 이유가 뭔가요 : ㅈㄴ귀찮아요.....읍읍(시간되면 PyQt5로 GUI화시켜서 올릴꺼임)
 ***
 
 ### How to use?
