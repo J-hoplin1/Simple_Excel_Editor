@@ -12,6 +12,8 @@ Simple Excel Editor
 - exe link : [here](https://drive.google.com/open?id=14cZh265q9hwrnnkNOqq_atpaaAErUyqH)
 
 - exe file is in directory 'dist'
+
+- GUI로 안만드는 이유 : 귀찬....ㅎ.....읍읍
 ***
 
 ### How to use?
