@@ -9,8 +9,7 @@ Simple Excel Editor
 
 - Used library & modules : pandas, os,time,sys,warnings,numpy,pyinstaller
 
-- exe link : [here](https://drive.google.com/open?
-id=14cZh265q9hwrnnkNOqq_atpaaAErUyqH)
+- exe link : [here](https://drive.google.com/open?id=14cZh265q9hwrnnkNOqq_atpaaAErUyqH)
 
 - exe file is in directory 'dist'
 ***
