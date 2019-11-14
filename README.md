@@ -15,6 +15,10 @@ Simple Excel Editor
 
 - ??? : GUI로 안만드는 이유가 뭔가요 : ㅈㄴ귀찮아요.....읍읍(시간되면 PyQt5로 GUI화시켜서 올릴꺼임)
 ***
+- 2019/11/13
+    
+    - Renew Code : Delete code - User unfriendly
+    
 - 2019/11/14
 
     - Add Function : Able to merge dataset. Limit as only two dataset can be merged
