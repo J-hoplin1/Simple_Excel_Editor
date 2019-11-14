@@ -9,10 +9,6 @@ Simple Excel Editor
 
 - Used library & modules : pandas, os,time,sys,warnings,numpy,pyinstaller
 
-- 20191113.ver exe link : [here](https://drive.google.com/open?id=14cZh265q9hwrnnkNOqq_atpaaAErUyqH)
-
-- 20191114.ver exe link : [here](https://drive.google.com/open?id=19QLqjE_e15kC0nMRA05FSXAE0FyX3W0-)
-
 - exe file is in directory 'dist'
 
 - ??? : GUI로 안만드는 이유가 뭔가요 : ㅈㄴ귀찮아요.....읍읍(시간되면 PyQt5로 GUI화시켜서 올릴꺼임)
@@ -21,11 +17,15 @@ Simple Excel Editor
     
     - Renew Code : Delete code - User unfriendly
     
+    - 20191113.ver exe link : [here](https://drive.google.com/open?id=14cZh265q9hwrnnkNOqq_atpaaAErUyqH)
+    
 - 2019/11/14
 
     - Add Function : Able to merge dataset. Limit as only two dataset can be merged
     
     - Raise warnings : Some Warniings were occured. Raise these warnings.
+    
+    - 20191114.ver exe link : [here](https://drive.google.com/open?id=19QLqjE_e15kC0nMRA05FSXAE0FyX3W0-)
 ***
 ### How to use?
 
