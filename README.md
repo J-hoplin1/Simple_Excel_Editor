@@ -15,7 +15,12 @@ Simple Excel Editor
 
 - ??? : GUI로 안만드는 이유가 뭔가요 : ㅈㄴ귀찮아요.....읍읍(시간되면 PyQt5로 GUI화시켜서 올릴꺼임)
 ***
+- 2019/11/14
 
+    - Add Function : Able to merge dataset. Limit as only two dataset can be merged
+    
+    - Raise warnings : Some Warniings were occured. Raise these warnings.
+***
 ### How to use?
 
 
@@ -89,6 +94,7 @@ import time
 import sys
 import warnings
 import numpy as np
+warnings.filterwarnings(action='ignore')
 
 class excelEditor():
     bindedType = '.xlsx'
@@ -156,6 +162,7 @@ class excelEditor():
             while loopBoolean1:
                 dbnum = 1
                 print('=' * 10 + 'Select Database you want to handle' + '=' * 10)
+                print('-2 . Merge Data')
                 print('-1 . Exit')
                 print('0 . Create New DB')
                 dbli = os.listdir(self.dbDir)
@@ -166,9 +173,12 @@ class excelEditor():
                     dbnum += 1
                 print('=' * 54)
                 dbselect = int(input(">>"))
-                if dbselect == -1:
-                    print("Program will be closed soon...")
+                if dbselect == -2:
                     self.clearConsole()
+                    self.mergeData()
+                elif dbselect == -1:
+                    self.clearConsole()
+                    self.exitProgram()
                 elif dbselect == 0:
                     self.clearConsole()
                     self.createNewDataBaseDirect()
@@ -178,7 +188,7 @@ class excelEditor():
                     loopBoolean1 = False
             self.clearConsole()
             # 선택한 DB
-            self.selectedDB = pd.read_excel(dbDir + dbdict[dbselect], index_col=0)
+            self.selectedDB = pd.read_excel(self.dbDir + dbdict[dbselect], index_col=0)
             # 선택한 데이터베이스의 이름을 인스턴스 변수에 저장
             self.selectedDBName = dbdict[dbselect].split('.')[0]
             # 선택한 데이터베이스의 인덱스를 인스턴스 변수에 저장
@@ -248,6 +258,7 @@ class excelEditor():
                     answerSelect = input(">>")
                     if answerSelect == 'Y' or answerSelect == 'y':
                         self.selectedDB = newDataFrame
+                        self.syncInfo()
                         loopCheck = False
                         self.clearConsole()
                     elif answerSelect == 'N' or answerSelect == 'n':
@@ -291,7 +302,8 @@ class excelEditor():
             print("6 . Delete Row.")  # 구현완료
             print("7 . Delete Column.")  # 구현완료
             print("8 . Save Data.")  # 구현완료
-            print("9 . Edit Value")
+            print("9 . Edit Value")#구현완료
+            print("10 . Merge Data")
             print("=" * 22)
             menuNum = int(input(">>"))
             self.clearConsole()
@@ -367,6 +379,8 @@ class excelEditor():
                     self.saveData()
                 elif menuNum == 9:
                     self.editValue()
+                elif menuNum == 10:
+                    self.mergeData()
                 else:
                     print("You entered Wrong option number")
                     self.clearConsole()
@@ -563,6 +577,11 @@ class excelEditor():
                         print("잘못된 범위입력. 최소범위는 ", availableRange[0], "이며 최대 범위는 ", availableRange[-1], "입니다")
                     else:
                         print(self.selectedDB.iloc[startRange - 1:endRange])
+                        print('\n')
+                        print('\n')
+                        print('\n')
+                        print("Press any key to exit.")
+                        os.system('pause')
                         loopCK = False
                         self.clearConsole()
                 elif selectOption == 2:
@@ -831,6 +850,100 @@ class excelEditor():
             print("Permission Denied. Please check if selected database has been opend")
             self.clearConsole()
             return
+
+    def mergeData(self):
+        try:
+            outloop = True
+            inloop = True
+            while outloop:
+                if self.selectedDB is None:
+                    pass
+                else:
+                    if self.selectedDBStatusChange == True:
+                        print("이 작업을 수행하기 전에는 필수로 변경사항이 저장됩니다.")
+                        self.saveData()
+                    else:
+                        self.clearConsole()
+                        pass
+                print("=" * 10)
+                print("0 . Exit")
+                print("1 . 행 방향으로 데이터 합치기")
+                print("2 . 열 방향으로 데이터 합치기")
+                print("=" * 10)
+                select10 = int(input(">>"))
+                self.clearConsole()
+                if select10 == 0:
+                    return
+                elif select10 == 1 or select10 == 2:
+                    while inloop:
+                        dbnum = 1
+                        ck = True
+                        dbdict = dict()
+                        selectli = list()
+                        print("=" * 10)
+                        dbli = os.listdir(self.dbDir)
+                        dbli = [file for file in dbli if file.endswith(".xlsx")]
+                        print("합칠 두개의 데이터 선택하기")
+                        for dbname in dbli:
+                            dbdict[dbnum] = dbname
+                            print(dbnum, ".", dbname)
+                            dbnum += 1
+                        print('=' * 10)
+                        for e in range(0, 2):
+                            select10a = int(input(">>"))
+                            selectli.append(select10a)
+                        for a in selectli:
+                            if a not in dbdict.keys():
+                                ck = False
+                            else:
+                                continue
+                        if ck == False:
+                            print("잘못된 옵션선택. 다시 선택해주세요.")
+                            self.clearConsole()
+                        else:
+                            selectdata1 = pd.read_excel(self.dbDir + dbdict[selectli[0]], index_col=0)
+                            selectdata2 = pd.read_excel(self.dbDir + dbdict[selectli[1]], index_col=0)
+                            newDBName = dbdict[selectli[0]].split('.')[0] + "_" + dbdict[selectli[1]].split('.')[
+                                0] + '.xlsx'
+                            if select10 == 1:
+                                new_data = pd.concat([selectdata1, selectdata2], axis=1)
+                                new_data.fillna(np.nan)
+                                new_data.to_excel(self.dbDir + newDBName)
+                                print("합쳐진 데이터가 저장되었습니다.")
+                                self.clearConsole()
+                            else:
+                                new_data = pd.concat([selectdata1, selectdata2])
+                                new_data.fillna(np.nan)
+                                new_data.to_excel(self.dbDir + newDBName)
+                                print("합쳐진 데이터가 저장되었습니다.")
+                                self.clearConsole()
+                                inloop = False
+                                outloop = False
+                else:
+                    print("잘못된 옵션선택. 다시 시도해주세요")
+                    self.clearConsole()
+        except IndexError:
+            print("Index out of bound")
+            self.clearConsole()
+            return
+        except ValueError:
+            print("Value Error : Back to Main")
+            self.clearConsole()
+            return
+        except TypeError:
+            print("Type Error : Back to Main")
+            self.clearConsole()
+            return
+        except KeyError:
+            print("Key Error : Back to Main")
+            self.clearConsole()
+            return
+        except PermissionError:
+            print("Permission Denied. Please check if selected database has been opend")
+            self.clearConsole()
+            return
+
+
 
 ##############################################################
 if __name__ == '__main__':
