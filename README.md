@@ -921,6 +921,8 @@ class excelEditor():
                                 new_data.to_excel(self.dbDir + newDBName)
                                 print("합쳐진 데이터가 저장되었습니다.")
                                 self.clearConsole()
+                                inloop = False
+                                outloop = False
                             else:
                                 new_data = pd.concat([selectdata1, selectdata2])
                                 new_data.fillna(np.nan)
