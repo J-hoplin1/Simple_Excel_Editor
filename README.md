@@ -26,6 +26,10 @@ Simple Excel Editor
     - Raise warnings : Some Warniings were occured. Raise these warnings.
     
     - 20191114.ver exe link : [here](https://drive.google.com/open?id=19QLqjE_e15kC0nMRA05FSXAE0FyX3W0-)
+    
+- 2019/11/15
+
+    - Bug fix : Infinite Loop in option 10 - 2 (Merge Data - 행방향으로 합치기)
 ***
 ### How to use?
 
