@@ -137,7 +137,7 @@ class excelEditor():
     #새로운 데이터 생성하기
     def createNewDataBaseDirect(self):
         try:
-            loopCheck = True
+            loopCheck = True #DB save loop
             newColList = []
             print("Enter new DataBase's Name")
             dbNameInput = input(">>")
@@ -826,6 +826,8 @@ class excelEditor():
                                 new_data.to_excel(self.dbDir + newDBName)
                                 print("합쳐진 데이터가 저장되었습니다.")
                                 self.clearConsole()
+                                inloop = False
+                                outloop = False
                             else:
                                 new_data = pd.concat([selectdata1, selectdata2])
                                 new_data.fillna(np.nan)
