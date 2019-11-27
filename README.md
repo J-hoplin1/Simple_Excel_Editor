@@ -30,6 +30,8 @@ Simple Excel Editor
 - 2019/11/15
 
     - Bug fix : Infinite Loop in option 10 - 2 (Merge Data - 행방향으로 합치기)
+    
+    - 20191115.ver exe link : [here](https://drive.google.com/open?id=1TC-oGpYJHAT-Dc17NB0ofLBOhXmmTq6Q)
 ***
 ### How to use?
 
