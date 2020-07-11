@@ -1,7 +1,6 @@
 '''
 Code Written by J-Hoplin
 Repository of this program : https://github.com/J-hoplin1/Simple_Excel_Editor
-Opensource License : GPU_3.0
 '''
 import pandas as pd
 import os
